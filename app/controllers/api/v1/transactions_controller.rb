@@ -11,9 +11,8 @@ module Api
       end
 
       def create
-        @transaction = Transaction.create(customer_params)
+        @transaction = Transaction.create(transaction_params)
         return json_response(data: @transaction.errors, status: :unprocessable_entity) unless @transaction.valid?
-
         json_response(data: @transaction, status: :created)
       end
 
