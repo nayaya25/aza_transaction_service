@@ -1,24 +1,22 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
+This README contains the steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+* The endpoints are namespaced under 'api/v1' for easier versioning
 
-* Ruby version
+#### Ruby version
+  - 2.7.4
+#### Rails version
+- 6.0.4
+#### Configuration
+  - Ensure you have docker and docker-compose set up
+  - Run: docker-compose up
+#### Database creation
+  - Run: docker-compose run web rake db:create
+#### Database initialization
+  - Run: docker-compose run web rake db:migrate
+  - Run: docker-compose run web rake db:migrate RAILS_ENV=test
+#### How to run the test suite
+  - Run: docker-compose run web rspec
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
