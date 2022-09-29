@@ -3,7 +3,7 @@
 module Api
   module V1
     class TransactionsController < ApplicationController
-      before_action :set_transaction, only: %w[destroy show, update]
+      before_action :set_transaction, only: %w[destroy show update]
 
       def index
         @transactions = Transaction.all
@@ -19,7 +19,7 @@ module Api
 
       def show
         return json_response(status: :not_found) unless @transaction.present?
-
+        p @transaction
         json_response(data: @transaction, status: :ok)
       end
 

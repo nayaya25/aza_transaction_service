@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  protected
-  def json_response(data: {}, status: 200)
-    render json: data, status: status
-  end
+  include ApplicationHelper
 
+  protected
   def throttle_ip
     return unless Rails.env.production?
 
