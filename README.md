@@ -10,8 +10,14 @@ application up and running.
 #### Rails version
 - 6.0.4
 #### Configuration
-  - Ensure you have docker and docker-compose set up
-  - Run: docker-compose up
+* .env file variables
+    - DATABASE_NAME=aza_transaction_service
+    - TEST_DATABASE_NAME=aza_transaction_service_test
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=password
+    - POSTGRES_HOST=db
+- Ensure you have docker and docker-compose set up
+- Run: docker-compose up
 #### Database creation
   - Run: docker-compose run web rake db:create
 #### Database initialization
