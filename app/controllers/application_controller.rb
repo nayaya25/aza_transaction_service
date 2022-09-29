@@ -2,7 +2,6 @@
 
 class ApplicationController < ActionController::API
   protected
-
   def json_response(data: {}, status: 200)
     render json: data, status: status
   end
