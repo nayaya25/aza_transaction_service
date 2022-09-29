@@ -7,27 +7,27 @@ module Api
 
       def index
         @customers = Customer.all
-        json_response(data: @customers, status: :ok)
+        json_response(message: "success", data: @customers, status: :ok)
       end
 
       def create
         @customer = Customer.create(customer_params)
-        return json_response(data: @customer.errors, status: :unprocessable_entity) unless @customer.valid?
+        return json_response(message: "error", data: @customer.errors, status: :unprocessable_entity) unless @customer.valid?
 
-        json_response(data: @customer, status: :created)
+        json_response(message: "success", data: @customer, status: :created)
       end
 
       def show
-        return json_response(status: :not_found) unless @customer.present?
+        return json_response(message: "error", status: :not_found) unless @customer.present?
 
-        json_response(data: @customer, status: :ok)
+        json_response(message: "success", data: @customer, status: :ok)
       end
 
       def destroy
-        return json_response(status: :not_found) unless @customer.present?
+        return json_response(message: "error", status: :not_found) unless @customer.present?
 
         @customer.destroy
-        json_response(status: :no_content)
+        json_response(message: "success", status: :no_content)
       end
 
       private

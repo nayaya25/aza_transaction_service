@@ -14,7 +14,7 @@ RSpec.describe 'Customers', type: :request do
     end
 
     it 'returns all users' do
-      expect(json_response.size).to eq(10)
+      expect(json_response[:data].size).to eq(10)
     end
   end
 end

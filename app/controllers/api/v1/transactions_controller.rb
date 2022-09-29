@@ -7,34 +7,37 @@ module Api
 
       def index
         @transactions = Transaction.all
-        json_response(data: @transactions, status: :ok)
+        json_response(message: "success", data: @transactions, status: :ok)
       end
 
       def create
         @transaction = Transaction.create(transaction_params)
-        return json_response(data: @transaction.errors, status: :unprocessable_entity) unless @transaction.valid?
+        return json_response(message: "error", data: @transaction.errors, status: :unprocessable_entity) unless @transaction.valid?
 
-        json_response(data: @transaction, status: :created)
+        json_response(message: "success", data: @transaction, status: :created)
       end
 
       def show
-        return json_response(status: :not_found) unless @transaction.present?
-        p @transaction
-        json_response(data: @transaction, status: :ok)
+        return json_response(message: "error", status: :not_found) unless @transaction.present?
+
+        json_response(message: "success", data: @transaction, status: :ok)
       end
 
       def update
-        return json_response(status: :not_found) unless @transaction.present?
+        if update_params[:status]
+          update_params[:status] = resolve_status(update_params[:status])
+        end
+        return json_response(message: "error", status: :not_found) unless @transaction.present?
         @transaction.update!(update_params)
 
-        json_response(data: @transaction, status: :ok)
+        json_response(message: "success", data: @transaction, status: :ok)
       end
 
       def destroy
-        return json_response(status: :not_found) unless @transaction.present?
+        return json_response(message: "error", status: :not_found) unless @transaction.present?
 
         @transaction.destroy
-        json_response(status: :no_content)
+        json_response(message: "success", status: :no_content)
       end
 
       private
@@ -48,11 +51,16 @@ module Api
 
       def update_params
         params.permit(:input_amount_currency, :output_amount_currency,
-                      :transaction_date, :input_amount, :output_amount)
+                      :transaction_date, :input_amount, :output_amount, :status)
       end
 
       def set_transaction
         @transaction = Transaction.find(params[:id])
+      end
+
+      def resolve_status(status_str)
+        @statuses = { created: 0, paid: 1, cancelled: 2 }
+        @statuses[status_str.to_sym]
       end
     end
   end

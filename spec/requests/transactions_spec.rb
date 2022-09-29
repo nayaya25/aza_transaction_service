@@ -22,7 +22,7 @@ RSpec.describe 'Transactions', type: :request do
     end
 
     it 'returns Correct Data' do
-      expect(json_response).to include(
+      expect(json_response[:data]).to include(
         input_amount: '400.05',
         input_amount_currency: 'USD',
         output_amount: '171552.56',
@@ -49,7 +49,7 @@ RSpec.describe 'Transactions', type: :request do
     end
 
     it 'returns Correct Data' do
-      expect(json_response).to include(
+      expect(json_response[:data]).to include(
                                  input_amount: '56.05',
                                  input_amount_currency: 'NGN',
                                  output_amount: '23552.56',
@@ -70,7 +70,7 @@ RSpec.describe 'Transactions', type: :request do
     end
 
     it 'returns all transactions' do
-      expect(json_response.size).to eq(10)
+      expect(json_response[:data].size).to eq(10)
     end
   end
 
@@ -86,7 +86,7 @@ RSpec.describe 'Transactions', type: :request do
     end
 
     it 'returns Transaction with given ID' do
-      expect(json_response[0][:id]).to eq(transaction.id)
+      expect(json_response[:data][0][:id]).to eq(transaction.id)
     end
   end
 end
