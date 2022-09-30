@@ -17,7 +17,7 @@ application up and running.
     - POSTGRES_PASSWORD=password
     - POSTGRES_HOST=db
 - Ensure you have docker and docker-compose set up
-- Run: docker-compose up
+- Run: docker-compose up --build
 #### Database creation
   - Run: docker-compose run web rake db:create
 #### Database initialization
