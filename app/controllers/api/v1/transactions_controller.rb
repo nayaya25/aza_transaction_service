@@ -7,30 +7,28 @@ module Api
 
       def index
         @transactions = Transaction.all
-        json_response(message: "success", data: @transactions, status: :ok)
+        json_response(message: 'success', data: @transactions, status: :ok)
       end
 
       def create
         @transaction = Transaction.create!(transaction_params)
-        json_response(message: "success", data: @transaction, status: :created)
+        json_response(message: 'success', data: @transaction, status: :created)
       end
 
       def show
-        json_response(message: "success", data: @transaction, status: :ok)
+        json_response(message: 'success', data: @transaction, status: :ok)
       end
 
       def update
-        if update_params[:status]
-          update_params[:status] = resolve_status(update_params[:status])
-        end
+        update_params[:status] = resolve_status(update_params[:status]) if update_params[:status]
         @transaction.update!(update_params)
 
-        json_response(message: "success", data: @transaction, status: :ok)
+        json_response(message: 'success', data: @transaction, status: :ok)
       end
 
       def destroy
         @transaction.destroy
-        json_response(message: "success", status: :no_content)
+        json_response(message: 'success', status: :no_content)
       end
 
       private
@@ -48,11 +46,9 @@ module Api
       end
 
       def set_transaction
-        begin
-          @transaction = Transaction.find(params[:id])
-        rescue ActiveRecord::RecordNotFound => e
-          record_not_found(e)
-        end
+        @transaction = Transaction.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        record_not_found(e)
       end
 
       def resolve_status(status_str)

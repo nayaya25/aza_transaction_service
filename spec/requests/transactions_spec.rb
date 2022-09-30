@@ -42,15 +42,15 @@ RSpec.describe 'Transactions', type: :request do
 
     it 'Returns model validation error' do
       expect(json_response[:data]).to include(
-                                        "Input amount can't be blank",
-                                        "Input amount currency can't be blank",
-                                        "Input amount can't be blank",
-                                        "Input amount is not a number",
-                                        "Output amount is not a number",
-                                        "Output amount currency can't be blank",
-                                        "Transaction date can't be blank",
-                                        "Customer must exist"
-                                      )
+        "Input amount can't be blank",
+        "Input amount currency can't be blank",
+        "Input amount can't be blank",
+        'Input amount is not a number',
+        'Output amount is not a number',
+        "Output amount currency can't be blank",
+        "Transaction date can't be blank",
+        'Customer must exist'
+      )
     end
   end
 
@@ -63,7 +63,7 @@ RSpec.describe 'Transactions', type: :request do
         input_amount_currency: 'NGN',
         output_amount: 23_552.56,
         output_amount_currency: 'USD',
-        transaction_date: Date.today,
+        transaction_date: Date.today
       }
     end
 
@@ -73,11 +73,11 @@ RSpec.describe 'Transactions', type: :request do
 
     it 'returns Correct Data' do
       expect(json_response[:data]).to include(
-                                 input_amount: '56.05',
-                                 input_amount_currency: 'NGN',
-                                 output_amount: '23552.56',
-                                 output_amount_currency: 'USD'
-                               )
+        input_amount: '56.05',
+        input_amount_currency: 'NGN',
+        output_amount: '23552.56',
+        output_amount_currency: 'USD'
+      )
     end
   end
 
@@ -115,7 +115,7 @@ RSpec.describe 'Transactions', type: :request do
 
   describe 'GET /api/v1/transactions/:id should return not found' do
     before do
-      get '/api/v1/transactions/1', params: {  }
+      get '/api/v1/transactions/1', params: {}
     end
 
     it 'returns HTTP status 404' do
@@ -123,7 +123,7 @@ RSpec.describe 'Transactions', type: :request do
     end
 
     it 'returns error message' do
-      expect(json_response[:message]).to eq("error")
+      expect(json_response[:message]).to eq('error')
     end
   end
 end

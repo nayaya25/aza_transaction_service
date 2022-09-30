@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def unprocessable(exception)
-    json_response(message: "error", data: exception.record.errors.full_messages, status: :unprocessable_entity)
+    json_response(message: 'error', data: exception.record.errors.full_messages, status: :unprocessable_entity)
   end
 
   def standard_error(exception)
