@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Transactions', type: :request do
-  # Testing the create endpoint
-  describe 'POST /api/v1/transactions' do
+  # Testing the create endpoint for Correctness
+  describe 'POST /api/v1/transactions should create a transaction' do
     let!(:customer) { create(:customer) }
     before do
       post '/api/v1/transactions', params: {
@@ -30,9 +30,32 @@ RSpec.describe 'Transactions', type: :request do
       )
     end
   end
+  # Testing the create endpoint for Proper Error
+  describe 'POST /api/v1/transactions should return unprocessable error' do
+    before do
+      post '/api/v1/transactions', params: {}
+    end
+
+    it 'Returns HTTP status 422' do
+      expect(response).to have_http_status 422
+    end
+
+    it 'Returns model validation error' do
+      expect(json_response[:data]).to include(
+                                        "Input amount can't be blank",
+                                        "Input amount currency can't be blank",
+                                        "Input amount can't be blank",
+                                        "Input amount is not a number",
+                                        "Output amount is not a number",
+                                        "Output amount currency can't be blank",
+                                        "Transaction date can't be blank",
+                                        "Customer must exist"
+                                      )
+    end
+  end
 
   # Testing the update endpoint
-  describe 'PUT /api/v1/transactions' do
+  describe 'PUT /api/v1/transactions should update transaction' do
     let!(:transaction) { create(:transaction) }
     before do
       put "/api/v1/transactions/#{transaction.id}", params: {
@@ -59,7 +82,7 @@ RSpec.describe 'Transactions', type: :request do
   end
 
   # Testing the Fetch All endpoint
-  describe 'GET /api/v1/transactions' do
+  describe 'GET /api/v1/transactions should return all transactions' do
     before do
       create_list(:transaction, 10)
       get '/api/v1/transactions', headers: { 'Accept': 'application/json' }
@@ -75,7 +98,7 @@ RSpec.describe 'Transactions', type: :request do
   end
 
   # Testing the Fetch 1 endpoint
-  describe 'GET /api/v1/transactions/:id' do
+  describe 'GET /api/v1/transactions/:id should return a record' do
     let!(:transaction) { create(:transaction) }
     before do
       get '/api/v1/transactions', params: { id: transaction.id }
@@ -87,6 +110,20 @@ RSpec.describe 'Transactions', type: :request do
 
     it 'returns Transaction with given ID' do
       expect(json_response[:data][0][:id]).to eq(transaction.id)
+    end
+  end
+
+  describe 'GET /api/v1/transactions/:id should return not found' do
+    before do
+      get '/api/v1/transactions/1', params: {  }
+    end
+
+    it 'returns HTTP status 404' do
+      expect(response).to have_http_status 404
+    end
+
+    it 'returns error message' do
+      expect(json_response[:message]).to eq("error")
     end
   end
 end

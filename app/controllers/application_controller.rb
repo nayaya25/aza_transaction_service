@@ -3,6 +3,12 @@
 class ApplicationController < ActionController::API
   include ApplicationHelper
 
+  before_action :throttle_ip
+
+  rescue_from NameError, with: :standard_error
+  rescue_from ActiveRecord::RecordInvalid, with: :unprocessable
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+
   protected
   def throttle_ip
     return unless Rails.env.production?

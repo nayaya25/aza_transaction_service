@@ -11,15 +11,11 @@ module Api
       end
 
       def create
-        @transaction = Transaction.create(transaction_params)
-        return json_response(message: "error", data: @transaction.errors, status: :unprocessable_entity) unless @transaction.valid?
-
+        @transaction = Transaction.create!(transaction_params)
         json_response(message: "success", data: @transaction, status: :created)
       end
 
       def show
-        return json_response(message: "error", status: :not_found) unless @transaction.present?
-
         json_response(message: "success", data: @transaction, status: :ok)
       end
 
@@ -27,15 +23,12 @@ module Api
         if update_params[:status]
           update_params[:status] = resolve_status(update_params[:status])
         end
-        return json_response(message: "error", status: :not_found) unless @transaction.present?
         @transaction.update!(update_params)
 
         json_response(message: "success", data: @transaction, status: :ok)
       end
 
       def destroy
-        return json_response(message: "error", status: :not_found) unless @transaction.present?
-
         @transaction.destroy
         json_response(message: "success", status: :no_content)
       end
@@ -55,7 +48,11 @@ module Api
       end
 
       def set_transaction
-        @transaction = Transaction.find(params[:id])
+        begin
+          @transaction = Transaction.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+          record_not_found(e)
+        end
       end
 
       def resolve_status(status_str)
